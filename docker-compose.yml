@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: mastocare-db
+    image: postgres:16.2-alpine
+    volumes:
+      - mastocare-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=mastocare
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+      - PGDATA=/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - mastocare-network
+    restart: unless-stopped
+
+  mail-dev:
+    container_name: mail-dev-mastocare
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
+networks:
+  mastocare-network:
+    driver: bridge
+
+volumes:
+  mastocare-db-data:
