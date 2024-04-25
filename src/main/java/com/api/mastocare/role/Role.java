@@ -1,5 +1,6 @@
-package com.api.mastocare.domain.entities;
+package com.api.mastocare.role;
 
+import com.api.mastocare.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

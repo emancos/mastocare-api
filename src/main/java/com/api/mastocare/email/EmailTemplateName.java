@@ -1,4 +1,4 @@
-package com.api.mastocare.domain.enums;
+package com.api.mastocare.email;
 
 import lombok.Getter;
 

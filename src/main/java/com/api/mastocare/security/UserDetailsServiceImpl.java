@@ -1,6 +1,6 @@
-package com.api.mastocare.core.security;
+package com.api.mastocare.security;
 
-import com.api.mastocare.domain.repositories.UserRepository;
+import com.api.mastocare.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

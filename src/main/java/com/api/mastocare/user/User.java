@@ -1,5 +1,6 @@
-package com.api.mastocare.domain.entities;
+package com.api.mastocare.user;
 
+import com.api.mastocare.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

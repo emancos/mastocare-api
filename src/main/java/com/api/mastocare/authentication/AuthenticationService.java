@@ -1,33 +1,41 @@
-package com.api.mastocare.domain.services;
+package com.api.mastocare.authentication;
 
-import com.api.mastocare.domain.entities.RegistrationRequest;
-import com.api.mastocare.domain.entities.Token;
-import com.api.mastocare.domain.entities.User;
-import com.api.mastocare.domain.enums.EmailTemplateName;
-import com.api.mastocare.domain.repositories.RoleRepository;
-import com.api.mastocare.domain.repositories.TokenRepository;
-import com.api.mastocare.domain.repositories.UserRepository;
+import com.api.mastocare.security.JwtService;
+import com.api.mastocare.email.EmailTemplateName;
+import com.api.mastocare.role.RoleRepository;
+import com.api.mastocare.token.TokenRepository;
+import com.api.mastocare.token.Token;
+import com.api.mastocare.user.UserRepository;
+import com.api.mastocare.email.EmailService;
+import com.api.mastocare.user.User;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    @Value("${application.mailing.frontend.activation-url}")
+    private String activativationUrl;
+    private final AuthenticationManager authenticationManager;
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
-    @Value("${application.mailing.frontend.activation-url}")
-    private String activativationUrl;
+    private final JwtService jwtService;
 
     public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("ACS")
@@ -77,5 +85,37 @@ public class AuthenticationService {
             codeBuilder.append(characters.charAt(randomIndex));
         }
         return codeBuilder.toString();
+    }
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+        var claims = new HashMap<String, Object>();
+        var user = ((User) auth.getPrincipal());
+        claims.put("name", user.getName());
+        var jwtToken = jwtService.generateToken(claims, user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+    @Transactional
+    public void activateAccount(String token) throws MessagingException {
+        Token savedToken = tokenRepository.findByUserToken(token)
+                .orElseThrow(() -> new RuntimeException("Código inválido"));
+        if(Instant.now().isAfter(savedToken.getExpiresAt())) {
+            sendValidationEmail(savedToken.getUser());
+            throw new RuntimeException("Código de ativação expirou. Um novo código de ativação será enviado.");
+        }
+        var user = userRepository.findById(savedToken.getUser().getId())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
+        user.setEnabled(true);
+        userRepository.save(user);
+        savedToken.setValidateAt(Instant.now());
+        tokenRepository.save(savedToken);
     }
 }

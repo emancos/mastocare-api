@@ -1,7 +1,5 @@
-package com.api.mastocare.api.controllers;
+package com.api.mastocare.authentication;
 
-import com.api.mastocare.domain.entities.RegistrationRequest;
-import com.api.mastocare.domain.services.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
@@ -25,5 +23,19 @@ public class AuthenticationController {
     ) throws MessagingException {
         service.register(request);
         return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @RequestBody @Valid AuthenticationRequest request
+    ) {
+        return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @GetMapping("/activate-account")
+    public void cofirmAccount(
+            @RequestParam String token
+    ) throws MessagingException {
+        service.activateAccount(token);
     }
 }

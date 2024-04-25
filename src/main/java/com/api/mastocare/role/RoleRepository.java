@@ -1,6 +1,6 @@
-package com.api.mastocare.domain.repositories;
+package com.api.mastocare.role;
 
-import com.api.mastocare.domain.entities.Role;
+import com.api.mastocare.role.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,5 +1,6 @@
-package com.api.mastocare.domain.entities;
+package com.api.mastocare.token;
 
+import com.api.mastocare.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 

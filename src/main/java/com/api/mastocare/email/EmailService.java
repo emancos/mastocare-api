@@ -1,6 +1,5 @@
-package com.api.mastocare.domain.services;
+package com.api.mastocare.email;
 
-import com.api.mastocare.domain.enums.EmailTemplateName;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

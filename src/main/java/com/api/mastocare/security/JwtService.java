@@ -1,4 +1,4 @@
-package com.api.mastocare.core.security;
+package com.api.mastocare.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,7 +13,6 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -46,11 +45,11 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    private String generateToken(Map<String, Objects> claims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
         return buildToken(claims, userDetails, jwtExpiration);
     }
 
-    private String buildToken(Map<java.lang.String, Objects> extractClaims, UserDetails userDetails, long jwtExpiration) {
+    public String buildToken(Map<String, Object> extractClaims, UserDetails userDetails, long jwtExpiration) {
         var authorities = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)

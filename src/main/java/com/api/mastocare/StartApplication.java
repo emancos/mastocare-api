@@ -1,7 +1,7 @@
 package com.api.mastocare;
 
-import com.api.mastocare.domain.entities.Role;
-import com.api.mastocare.domain.repositories.RoleRepository;
+import com.api.mastocare.role.Role;
+import com.api.mastocare.role.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.api.mastocare.core.security;
+package com.api.mastocare.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
