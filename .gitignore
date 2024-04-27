@@ -34,3 +34,4 @@ build/
 
 logo.jpeg
 SQL/
+.env
