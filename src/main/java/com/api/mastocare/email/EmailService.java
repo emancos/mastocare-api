@@ -13,8 +13,8 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.nio.charset.StandardCharsets.*;
-import static org.springframework.mail.javamail.MimeMessageHelper.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_MIXED;
 
 @Service
 @RequiredArgsConstructor

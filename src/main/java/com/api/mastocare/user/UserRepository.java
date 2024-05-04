@@ -1,6 +1,5 @@
 package com.api.mastocare.user;
 
-import com.api.mastocare.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
