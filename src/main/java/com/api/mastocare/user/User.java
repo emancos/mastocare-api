@@ -1,5 +1,7 @@
 package com.api.mastocare.user;
 
+import com.api.mastocare.history.PsfTransactionalHistory;
+import com.api.mastocare.psf.Psf;
 import com.api.mastocare.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,6 +42,13 @@ public class User implements UserDetails, Principal {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    @ManyToOne
+    @JoinColumn(name = "psf_id")
+    private Psf psf;
+
+    @OneToMany(mappedBy = "user")
+    private List<PsfTransactionalHistory> histories;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
