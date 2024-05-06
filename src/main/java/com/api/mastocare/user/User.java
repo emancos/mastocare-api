@@ -43,9 +43,8 @@ public class User implements UserDetails, Principal {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    @ManyToOne
-    @JoinColumn(name = "psf_id")
-    private Psf psf;
+    @OneToMany(mappedBy = "owner")
+    private List<Psf> psfs;
 
     @OneToMany(mappedBy = "user")
     private List<PsfTransactionalHistory> histories;
