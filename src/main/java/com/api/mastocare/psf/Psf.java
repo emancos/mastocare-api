@@ -28,6 +28,8 @@ public class Psf extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+    @OneToMany(mappedBy = "acs")
+    private List<User> acs;
     @OneToMany(mappedBy = "psf")
     private List<PsfTransactionalHistory> histories;
 }

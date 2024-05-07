@@ -43,6 +43,10 @@ public class User implements UserDetails, Principal {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
+    @ManyToOne
+    @JoinColumn(name = "acs")
+    private User acs;
+
     @OneToMany(mappedBy = "owner")
     private List<Psf> psfs;
 
